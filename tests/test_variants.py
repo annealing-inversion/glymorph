@@ -10,6 +10,7 @@ import tempfile
 import unittest
 import zipfile
 
+from gfont_variants import generate_variants
 from gfont_variants.cli import main
 from gfont_variants.font import Cursor, Font, FontError, Glyph, encode_string
 from gfont_variants.geometry import contact_interval, length
@@ -20,10 +21,11 @@ def glyph(char='一', strokes=(((0., 0.), (50., 0.), (100., 0.)),)):
     return Glyph(char, tuple(tuple(s) for s in strokes))
 
 
-def font_bytes(glyphs):
+def font_bytes(glyphs, *, name='测试字体', units=600, preview_count=None):
+    preview_count = len(glyphs) if preview_count is None else preview_count
     metadata = (struct.pack('>I', 6) + encode_string('xiongzai') + struct.pack('>I', 2)
-                + encode_string('测试字体') + encode_string('作者') + encode_string('说明')
-                + struct.pack('>III', 600, len(glyphs), len(glyphs)))
+                + encode_string(name) + encode_string('作者') + encode_string('说明')
+                + struct.pack('>III', units, len(glyphs), preview_count))
     archive_bytes = io.BytesIO()
     with zipfile.ZipFile(archive_bytes, 'w', zipfile.ZIP_DEFLATED) as archive:
         archive.comment = b'preserve me'
@@ -31,7 +33,7 @@ def font_bytes(glyphs):
             info = zipfile.ZipInfo(g.char, (2020, 1, 1, 0, 0, 0))
             info.compress_type = zipfile.ZIP_DEFLATED
             archive.writestr(info, g.encode())
-    return metadata + b''.join(g.encode() for g in glyphs) + archive_bytes.getvalue()
+    return metadata + b''.join(g.encode() for g in glyphs[:preview_count]) + archive_bytes.getvalue()
 
 
 class FontTests(unittest.TestCase):
@@ -234,6 +236,65 @@ class CLITests(unittest.TestCase):
                 with self.subTest(flags=flags):
                     self.assertEqual(self.run_cli(['generate', source, '--output', root/'out']+flags), 2)
                     self.assertFalse((root/'out').exists())
+
+
+class PublicAPITests(unittest.TestCase):
+    def test_different_user_fonts_and_charsets_require_no_repository_font(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cases = [
+                ('英文名字', 'AZ09', 1000, 0),
+                ('Another name', '天地人', 256, 1),
+                ('符号与空白', '+- ', 2048, 3),
+            ]
+            for index, (name, charset, units, previews) in enumerate(cases):
+                with self.subTest(name=name):
+                    source = root / f'用户字体 {index}.gfont'
+                    glyphs = [glyph(ch, (((0., 0.), (float(units), 0.)),)) for ch in charset]
+                    raw = font_bytes(glyphs, name=name, units=units, preview_count=previews)
+                    source.write_bytes(raw)
+                    destination = root / f'用户输出 {index}'
+                    with redirect_stdout(io.StringIO()) as output:
+                        result = generate_variants(source, destination, count=2, seed=3,
+                                                   options=Options(length=True, scale=True))
+                    self.assertEqual(output.getvalue(), '')
+                    self.assertEqual(result, destination.resolve())
+                    manifest = json.loads((result/'manifest.json').read_text())
+                    self.assertEqual(manifest['source_font_name'], name)
+                    self.assertEqual(manifest['glyph_count'], len(charset))
+                    self.assertTrue(manifest['preview_chars'])
+                    self.assertTrue(set(manifest['preview_chars']) <= set(charset))
+                    self.assertNotIn(' ', manifest['preview_chars'])
+                    exported = Font.load(result/'variant_001.gfont')
+                    self.assertEqual(set(exported.glyphs), set(charset))
+                    self.assertEqual(len(exported.previews), previews)
+                    self.assertEqual(exported.units, units)
+                    self.assertEqual(source.read_bytes(), raw)
+
+    def test_api_and_cli_share_generation_parameters_and_outputs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root/'arbitrary-name.gfont'
+            source.write_bytes(font_bytes([glyph('A'), glyph('Z')], name='Latin'))
+            generate_variants(source, root/'api', options=Options(scale=True), count=1, seed=7)
+            with redirect_stdout(io.StringIO()):
+                self.assertEqual(main(['generate', str(source), '--output', str(root/'cli'),
+                                       '--scale', '--count', '1', '--seed', '7']), 0)
+            self.assertEqual((root/'api'/'variant_001.gfont').read_bytes(),
+                             (root/'cli'/'variant_001.gfont').read_bytes())
+            manifest = json.loads((root/'cli'/'manifest.json').read_text())
+            self.assertEqual(manifest['preview_chars'], 'AZ')
+
+    def test_invalid_preview_and_non_integer_count_do_not_write_outputs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root/'latin.gfont'
+            source.write_bytes(font_bytes([glyph('A')]))
+            for kwargs in [dict(preview_chars='永'), dict(count=1.5), dict(count=True),
+                           dict(preview_count=-1), dict(seed='42')]:
+                with self.subTest(kwargs=kwargs), self.assertRaises(ValueError):
+                    generate_variants(source, root/'out', options=Options(scale=True), **kwargs)
+                self.assertFalse((root/'out').exists())
 
 
 if __name__ == '__main__':

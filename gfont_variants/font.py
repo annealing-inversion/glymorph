@@ -1,4 +1,4 @@
-"""Strict reader/writer for the supplied xiongzai v6 dialect, not generic gfont.
+"""Strict reader/writer for fonts in the supported xiongzai v6 dialect.
 
 Unchanged header fields are preserved as bytes. ZIP glyphs and inline previews
 are regenerated together. No third-party implementation is imported.

@@ -7,6 +7,4 @@ dist/
 output/
 *.gfont
 *:Zone.Identifier
-analysis/*.png
-analysis/*.svg
-analysis/font_inspection.json
+analysis/
