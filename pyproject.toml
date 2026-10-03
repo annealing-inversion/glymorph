@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gfont-variants"
+version = "0.1.0"
+description = "Configurable stroke-length and scaling variants for xiongzai v6 gfont files"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+gfont-variants = "gfont_variants.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["gfont_variants*"]

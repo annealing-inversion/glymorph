@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+output/
+*.gfont
+*:Zone.Identifier
+analysis/*.png
+analysis/*.svg
+analysis/font_inspection.json
