@@ -1,6 +1,6 @@
 """Glymorph: trajectory font variants with selectable length and scaling operations."""
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 from .transforms import Options
 from .pipeline import generate_variants

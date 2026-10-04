@@ -72,7 +72,8 @@ def main(argv=None):
     try:
         if args.command == 'inspect':
             font = Font.load(args.font)
-            print(json.dumps({'format': 'xiongzai-v6', 'font_name': font.name,
+            print(json.dumps({'format': 'gfont', 'format_version': font.version,
+                              'metadata_encoding': font.metadata_encoding, 'font_name': font.name,
                               'glyph_count': len(font.glyphs), 'preview_count': len(font.previews),
                               'points': sum(len(g.points) for g in font.glyphs.values()),
                               'paths': sum(len(g.strokes) for g in font.glyphs.values())},

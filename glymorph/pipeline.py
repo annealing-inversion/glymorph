@@ -34,6 +34,9 @@ def validate_export(source, expected, blob):
     loaded = Font.decode(blob)
     if loaded.glyphs.keys() != source.glyphs.keys() or loaded.previews != source.previews:
         raise ValueError('导出丢失了字符或预览字形')
+    if (loaded.version != source.version or loaded.metadata_encoding != source.metadata_encoding
+            or [e.filename for e in loaded.entries] != [e.filename for e in source.entries]):
+        raise ValueError('导出改变了字体格式布局')
     for char, glyph in loaded.glyphs.items():
         if glyph.encode() != expected[char].encode():
             raise ValueError(f'导出坐标不一致：{char}')
@@ -98,6 +101,8 @@ def generate_variants(
             name = f'{source.name}_v{variant+1:03}_{batch_id}'
             blob = source.encode(transformed, name)
             exported = validate_export(source, transformed, blob)
+            if exported.name != name:
+                raise ValueError('导出的字体名称不一致')
             filename = f'variant_{variant+1:03}.gfont'
             (stage / filename).write_bytes(blob)
             changed = sum(g.encode() != original_payloads[ch] for ch, g in exported.glyphs.items())
@@ -108,7 +113,8 @@ def generate_variants(
                 previews.append({ch: exported.glyphs[ch] for ch in preview_chars})
             report(f'[{variant+1}/{count}] {filename}，{changed} 个字形变化，读回校验通过')
         manifest = {
-            'tool_version': __version__, 'format': 'xiongzai-v6', 'batch_id': batch_id,
+            'tool_version': __version__, 'format': 'gfont', 'batch_id': batch_id,
+            'format_version': source.version, 'metadata_encoding': source.metadata_encoding,
             'source_file': source_path.name, 'source_sha256': source_hash,
             'source_font_name': source.name, 'glyph_count': len(source.glyphs),
             'seed': seed, 'count': count, 'options': asdict(options),

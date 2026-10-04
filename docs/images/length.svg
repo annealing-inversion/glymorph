@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="700" viewBox="0 0 1040 700" role="img" aria-labelledby="title desc">
+<title id="title">01  笔画延长 / 缩短：每条 path 独立变化</title>
+<desc id="desc">同一个示意木字，依次显示原字和两个随机变体。横、竖、撇、捺使用不同颜色；每条 path 独立抽取长度倍数，同一字内同时出现延长与缩短。下方列出各 path 的实际长度比。</desc>
+<rect width="100%" height="100%" rx="20" fill="#f3f6fa"/>
+<g font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif">
+<text x="32" y="46" font-size="27" fill="#172d42" text-anchor="start">01  笔画延长 / 缩短：每条 path 独立变化</text>
+<text x="32" y="79" font-size="17" fill="#526579" text-anchor="start">颜色区分四条 path；灰色虚线为原字参照。三列使用相同坐标与显示比例。</text>
+<rect x="32" y="105" width="312" height="508" rx="12" fill="#ffffff" stroke="#dce4ed"/>
+<text x="188.0" y="139" font-size="21" fill="#172d42" text-anchor="middle">原字</text>
+<text x="188.0" y="167" font-size="16" fill="#526579" text-anchor="middle">同一字形中的 4 条 path</text>
+<polyline points="120.000,261.000 154.000,261.000 184.000,259.000 220.000,255.000 250.000,255.000" fill="none" stroke="#086bca" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="184.000,199.000 184.000,259.000 184.000,311.000 186.000,359.000" fill="none" stroke="#13816e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="184.000,259.000 166.000,289.000 138.000,319.000 106.000,337.000" fill="none" stroke="#be610d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="184.000,259.000 206.000,291.000 238.000,323.000 270.000,339.000" fill="none" stroke="#8748bd" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="52" x2="324" y1="412" y2="412" stroke="#dce4ed"/>
+<text x="52" y="437" font-size="16" fill="#526579" text-anchor="start">path</text>
+<text x="324" y="437" font-size="16" fill="#526579" text-anchor="end">实际长度倍数 / 变化</text>
+<line x1="52" x2="68" y1="465" y2="465" stroke="#086bca" stroke-width="3" stroke-linecap="round"/>
+<text x="78" y="471" font-size="17" fill="#086bca" text-anchor="start">横 P1</text>
+<text x="324" y="471" font-size="17" fill="#172d42" text-anchor="end">×1.000 · 原长</text>
+<line x1="52" x2="68" y1="501" y2="501" stroke="#13816e" stroke-width="3" stroke-linecap="round"/>
+<text x="78" y="507" font-size="17" fill="#13816e" text-anchor="start">竖 P2</text>
+<text x="324" y="507" font-size="17" fill="#172d42" text-anchor="end">×1.000 · 原长</text>
+<line x1="52" x2="68" y1="537" y2="537" stroke="#be610d" stroke-width="3" stroke-linecap="round"/>
+<text x="78" y="543" font-size="17" fill="#be610d" text-anchor="start">撇 P3</text>
+<text x="324" y="543" font-size="17" fill="#172d42" text-anchor="end">×1.000 · 原长</text>
+<line x1="52" x2="68" y1="573" y2="573" stroke="#8748bd" stroke-width="3" stroke-linecap="round"/>
+<text x="78" y="579" font-size="17" fill="#8748bd" text-anchor="start">捺 P4</text>
+<text x="324" y="579" font-size="17" fill="#172d42" text-anchor="end">×1.000 · 原长</text>
+<rect x="364" y="105" width="312" height="508" rx="12" fill="#ffffff" stroke="#dce4ed"/>
+<text x="520.0" y="139" font-size="21" fill="#172d42" text-anchor="middle">随机变体 A</text>
+<text x="520.0" y="167" font-size="16" fill="#526579" text-anchor="middle">每条 path 独立抽取倍数</text>
+<polyline points="452.000,261.000 486.000,261.000 516.000,259.000 552.000,255.000 582.000,255.000" fill="none" stroke="#b9c4cf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 5"/>
+<polyline points="516.000,199.000 516.000,259.000 516.000,311.000 518.000,359.000" fill="none" stroke="#b9c4cf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 5"/>
+<polyline points="516.000,259.000 498.000,289.000 470.000,319.000 438.000,337.000" fill="none" stroke="#b9c4cf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 5"/>
+<polyline points="516.000,259.000 538.000,291.000 570.000,323.000 602.000,339.000" fill="none" stroke="#b9c4cf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 5"/>
+<polyline points="444.594,261.000 452.000,261.000 486.000,261.000 516.000,259.000 552.000,255.000 582.000,255.000 589.406,255.000" fill="none" stroke="#086bca" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="516.000,215.536 516.000,259.000 516.000,311.000 517.312,342.478" fill="none" stroke="#13816e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="516.000,259.000 498.000,289.000 470.000,319.000 438.000,337.000 425.159,344.223" fill="none" stroke="#be610d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="516.000,259.000 538.000,291.000 570.000,323.000 602.000,339.000 627.520,351.760" fill="none" stroke="#8748bd" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="384" x2="656" y1="412" y2="412" stroke="#dce4ed"/>
+<text x="384" y="437" font-size="16" fill="#526579" text-anchor="start">path</text>
+<text x="656" y="437" font-size="16" fill="#526579" text-anchor="end">实际长度倍数 / 变化</text>
+<line x1="384" x2="400" y1="465" y2="465" stroke="#086bca" stroke-width="3" stroke-linecap="round"/>
+<text x="410" y="471" font-size="17" fill="#086bca" text-anchor="start">横 P1</text>
+<text x="656" y="471" font-size="17" fill="#172d42" text-anchor="end">×1.114 · 延长 11.4%</text>
+<line x1="384" x2="400" y1="501" y2="501" stroke="#13816e" stroke-width="3" stroke-linecap="round"/>
+<text x="410" y="507" font-size="17" fill="#13816e" text-anchor="start">竖 P2</text>
+<text x="656" y="507" font-size="17" fill="#172d42" text-anchor="end">×0.793 · 缩短 20.7%</text>
+<line x1="384" x2="400" y1="537" y2="537" stroke="#be610d" stroke-width="3" stroke-linecap="round"/>
+<text x="410" y="543" font-size="17" fill="#be610d" text-anchor="start">撇 P3</text>
+<text x="656" y="543" font-size="17" fill="#172d42" text-anchor="end">×1.131 · 延长 13.1%</text>
+<line x1="384" x2="400" y1="573" y2="573" stroke="#8748bd" stroke-width="3" stroke-linecap="round"/>
+<text x="410" y="579" font-size="17" fill="#8748bd" text-anchor="start">捺 P4</text>
+<text x="656" y="579" font-size="17" fill="#172d42" text-anchor="end">×1.238 · 延长 23.8%</text>
+<rect x="696" y="105" width="312" height="508" rx="12" fill="#ffffff" stroke="#dce4ed"/>
+<text x="852.0" y="139" font-size="21" fill="#172d42" text-anchor="middle">随机变体 B</text>
+<text x="852.0" y="167" font-size="16" fill="#526579" text-anchor="middle">每条 path 独立抽取倍数</text>
+<polyline points="784.000,261.000 818.000,261.000 848.000,259.000 884.000,255.000 914.000,255.000" fill="none" stroke="#b9c4cf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 5"/>
+<polyline points="848.000,199.000 848.000,259.000 848.000,311.000 850.000,359.000" fill="none" stroke="#b9c4cf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 5"/>
+<polyline points="848.000,259.000 830.000,289.000 802.000,319.000 770.000,337.000" fill="none" stroke="#b9c4cf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 5"/>
+<polyline points="848.000,259.000 870.000,291.000 902.000,323.000 934.000,339.000" fill="none" stroke="#b9c4cf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 5"/>
+<polyline points="799.152,261.000 818.000,261.000 848.000,259.000 884.000,255.000 898.848,255.000" fill="none" stroke="#086bca" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="848.000,181.988 848.000,199.000 848.000,259.000 848.000,311.000 850.000,359.000 850.708,375.998" fill="none" stroke="#13816e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="848.000,259.000 830.000,289.000 802.000,319.000 770.000,337.000 768.474,337.858" fill="none" stroke="#be610d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="848.000,259.000 870.000,291.000 902.000,323.000 929.261,336.630" fill="none" stroke="#8748bd" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="716" x2="988" y1="412" y2="412" stroke="#dce4ed"/>
+<text x="716" y="437" font-size="16" fill="#526579" text-anchor="start">path</text>
+<text x="988" y="437" font-size="16" fill="#526579" text-anchor="end">实际长度倍数 / 变化</text>
+<line x1="716" x2="732" y1="465" y2="465" stroke="#086bca" stroke-width="3" stroke-linecap="round"/>
+<text x="742" y="471" font-size="17" fill="#086bca" text-anchor="start">横 P1</text>
+<text x="988" y="471" font-size="17" fill="#172d42" text-anchor="end">×0.767 · 缩短 23.3%</text>
+<line x1="716" x2="732" y1="501" y2="501" stroke="#13816e" stroke-width="3" stroke-linecap="round"/>
+<text x="742" y="507" font-size="17" fill="#13816e" text-anchor="start">竖 P2</text>
+<text x="988" y="507" font-size="17" fill="#172d42" text-anchor="end">×1.213 · 延长 21.3%</text>
+<line x1="716" x2="732" y1="537" y2="537" stroke="#be610d" stroke-width="3" stroke-linecap="round"/>
+<text x="742" y="543" font-size="17" fill="#be610d" text-anchor="start">撇 P3</text>
+<text x="988" y="543" font-size="17" fill="#172d42" text-anchor="end">×1.016 · 延长 1.6%</text>
+<line x1="716" x2="732" y1="573" y2="573" stroke="#8748bd" stroke-width="3" stroke-linecap="round"/>
+<text x="742" y="579" font-size="17" fill="#8748bd" text-anchor="start">捺 P4</text>
+<text x="988" y="579" font-size="17" fill="#172d42" text-anchor="end">×0.956 · 缩短 4.4%</text>
+<text x="32" y="650" font-size="18" fill="#172d42" text-anchor="start">抽样范围 0.75～1.25，随机种子 42。同一字中各条 path 的变化幅度可以不同。</text>
+<text x="32" y="682" font-size="17" fill="#526579" text-anchor="start">数值按变形前后路径长度计算；交接处仍受保护。演示幅度刻意放大，便于观察。</text>
+</g></svg>
