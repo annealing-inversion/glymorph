@@ -10,11 +10,11 @@ import tempfile
 import unittest
 import zipfile
 
-from gfont_variants import generate_variants
-from gfont_variants.cli import main
-from gfont_variants.font import Cursor, Font, FontError, Glyph, encode_string
-from gfont_variants.geometry import contact_interval, length
-from gfont_variants.transforms import Options, plan_length, scale_glyph, transform_glyph
+from glymorph import generate_variants
+from glymorph.cli import main
+from glymorph.font import Cursor, Font, FontError, Glyph, encode_string
+from glymorph.geometry import contact_interval, length
+from glymorph.transforms import Options, plan_length, scale_glyph, transform_glyph
 
 
 def glyph(char='一', strokes=(((0., 0.), (50., 0.), (100., 0.)),)):

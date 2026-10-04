@@ -1,4 +1,6 @@
-# gfont-variants
+# Glymorph
+
+名字由 **Glyph**（字形）和 **Morph**（变形）组合而来。
 
 一个可复用的轨迹字体变体生成工具。用户指定**输入字体文件、变形选项、参数和输出目录**，
 即可生成多套字体，供奎享雕刻等上位机的多字体随机选字功能使用。
@@ -24,18 +26,18 @@
 Python 3.10 或更新版本；生成器和测试均只使用标准库，无需安装依赖：
 
 ```bash
-python -m gfont_variants inspect '/path/to/input.gfont'
-python -m gfont_variants generate --help
+python -m glymorph inspect '/path/to/input.gfont'
+python -m glymorph generate --help
 ```
 
-可选安装为命令：`python -m pip install -e .`，随后用 `gfont-variants` 代替
-`python -m gfont_variants`。安装后可在任意工作目录运行。
+可选安装为命令：`python -m pip install -e .`，随后用 `glymorph` 代替
+`python -m glymorph`。安装后可在任意工作目录运行。
 下面的 `/path/to/input.gfont` 均替换为用户自己的文件路径。
 
 ### 仅调整长短
 
 ```bash
-python -m gfont_variants generate '/path/to/input.gfont' \
+python -m glymorph generate '/path/to/input.gfont' \
   --output output/length-only \
   --count 16 --seed 42 \
   --length --length-min 0.95 --length-max 1.05
@@ -48,7 +50,7 @@ python -m gfont_variants generate '/path/to/input.gfont' \
 ### 仅局部缩放
 
 ```bash
-python -m gfont_variants generate '/path/to/input.gfont' \
+python -m glymorph generate '/path/to/input.gfont' \
   --output output/scale-only \
   --count 16 --seed 42 \
   --scale --scale-mode local \
@@ -60,7 +62,7 @@ python -m gfont_variants generate '/path/to/input.gfont' \
 ### 叠加长短与缩放
 
 ```bash
-python -m gfont_variants generate '/path/to/input.gfont' \
+python -m glymorph generate '/path/to/input.gfont' \
   --output output/combined \
   --count 16 --seed 42 \
   --length --length-min 0.95 --length-max 1.05 \
@@ -78,7 +80,7 @@ Python/zlib 环境。不同变体、不同字符分别抽取参数。
 其他程序可以直接调用，无需构造命令行参数：
 
 ```python
-from gfont_variants import Options, generate_variants
+from glymorph import Options, generate_variants
 
 output = generate_variants(
     input_font='/path/to/input.gfont',
@@ -201,7 +203,7 @@ python -m unittest discover -s tests -v
 整字/局部缩放公式、叠加次序、随机复现、参数校验及不覆盖已有输出。
 
 ```text
-gfont_variants/
+glymorph/
   cli.py          命令行入口
   pipeline.py     公共文件处理流程 / Python 接口
   font.py         已支持格式的读写

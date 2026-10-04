@@ -11,7 +11,7 @@ from .transforms import Options
 
 
 def parser():
-    cli = argparse.ArgumentParser(description='读取用户指定的字体文件，生成长短/缩放变体；两项默认均关闭。')
+    cli = argparse.ArgumentParser(prog='glymorph', description='Glymorph：读取用户指定的字体文件，生成长短/缩放变体；两项默认均关闭。')
     cli.add_argument('--version', action='version', version=__version__)
     sub = cli.add_subparsers(dest='command', required=True)
     inspect = sub.add_parser('inspect', help='读取并校验字体，输出基本信息')

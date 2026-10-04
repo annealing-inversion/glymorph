@@ -87,7 +87,7 @@ def generate_variants(
         plans = {ch: plan_length(g, options) for ch, g in source.glyphs.items()}
     original_payloads = {ch: g.encode() for ch, g in source.glyphs.items()}
     destination.parent.mkdir(parents=True, exist_ok=True)
-    stage = Path(tempfile.mkdtemp(prefix='.gfont-variants-', dir=destination.parent))
+    stage = Path(tempfile.mkdtemp(prefix='.glymorph-', dir=destination.parent))
     records, previews = [], []
     try:
         for variant in range(count):

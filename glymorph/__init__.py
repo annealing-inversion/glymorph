@@ -1,4 +1,4 @@
-"""Trajectory font variants: explicitly selected length and scaling operations."""
+"""Glymorph: trajectory font variants with selectable length and scaling operations."""
 
 __version__ = "0.2.0"
 

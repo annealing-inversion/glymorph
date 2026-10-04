@@ -3,7 +3,7 @@ requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "gfont-variants"
+name = "glymorph"
 version = "0.2.0"
 description = "Configurable stroke-length and scaling variants for xiongzai v6 gfont files"
 readme = "README.md"
@@ -11,7 +11,7 @@ requires-python = ">=3.10"
 dependencies = []
 
 [project.scripts]
-gfont-variants = "gfont_variants.cli:main"
+glymorph = "glymorph.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["gfont_variants*"]
+include = ["glymorph*"]
