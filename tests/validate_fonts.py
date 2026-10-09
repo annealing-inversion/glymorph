@@ -16,6 +16,7 @@ from urllib.parse import quote
 from glymorph import Options, __version__, generate_variants
 from glymorph.font import Font
 from glymorph.geometry import length
+from glymorph.preview import glyph_difference
 
 
 CASES = {
@@ -52,12 +53,17 @@ def validate_case(source, directory, mode, original_hash, count):
     check(manifest['source_sha256'] == original_hash, 'Source hash mismatch')
     check(len(manifest['files']) == count, 'Missing output files')
     check((directory/'preview.svg').is_file(), 'Missing preview')
+    check((directory/'preview.html').is_file(), 'Missing interactive preview')
     names, signatures = set(), set()
     changed_counts, output_sizes = [], []
-    for record in manifest['files']:
+    for index, record in enumerate(manifest['files']):
         blob = (directory/record['file']).read_bytes()
         check(digest(blob) == record['sha256'], 'Output hash mismatch')
         output = Font.decode(blob)  # Includes CRC, float32 and inline-preview checks.
+        if index < manifest['preview_count']:
+            check(manifest['preview_differences'][index] == {
+                ch: glyph_difference(source.glyphs[ch], output.glyphs[ch])
+                for ch in manifest['preview_chars']}, 'Preview difference metrics mismatch')
         check(output.name == record['font_name'] and output.name != source.name, 'Wrong font name')
         names.add(output.name)
         check(output.version == source.version and output.metadata_encoding == source.metadata_encoding,
@@ -142,7 +148,10 @@ def write_index(destination, records):
             '<style>body{font:16px system-ui;max-width:1200px;margin:40px auto;padding:0 20px;color:#172d42} '
             'img{max-width:100%;border:1px solid #ccd5df} details{margin:20px 0} summary{cursor:pointer} '
             'h2{margin-top:48px} code{overflow-wrap:anywhere}</style>',
-            '<h1>Glymorph 字体验证结果</h1><p>软件导出与读回测试；尚未在奎享客户端或实机验证。</p>']
+            '<h1>Glymorph 字体验证结果</h1><p>软件导出与读回测试；尚未在奎享客户端或实机验证。</p>',
+            '<p>灰色虚线为原字，蓝色为实际导出的变体。部分局部缩放的变化较小，'
+            '请打开“放大 / 叠加 / 交替对比”查看。字形记录有变化不等于肉眼能分辨；'
+            '倍数为 1 的测试用于检查不变形时的结果。</p>']
     for record in records:
         html.append(f'<h2>{escape(record["source"])}</h2><p>{escape(record["status"])} '
                     f'· {record.get("glyph_count", "?")} 个字形</p>')
@@ -150,7 +159,8 @@ def write_index(destination, records):
             html.append(f'<p>{escape(record["error"])}</p>')
         for mode in record['cases']:
             href = quote(f'{record["directory"]}/{mode}', safe='/')
-            html.append(f'<details><summary>{TITLES[mode]}</summary><p><a href="{href}/preview.svg">单独打开对比图</a> '
+            html.append(f'<details><summary>{TITLES[mode]}</summary><p><a href="{href}/preview.html">放大 / 叠加 / 交替对比</a> '
+                        f'· <a href="{href}/preview.svg">静态对比图</a> '
                         f'· <a href="{href}/manifest.json">参数与输出记录</a></p>'
                         f'<img src="{href}/preview.svg" alt="{TITLES[mode]}实际导出对比"></details>')
     html.append('</html>')

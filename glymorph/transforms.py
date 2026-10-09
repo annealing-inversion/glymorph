@@ -12,14 +12,14 @@ from .geometry import contact_interval, densify, extend, length, outward, trim_s
 @dataclass(frozen=True)
 class Options:
     length: bool = False
-    length_min: float = .95
-    length_max: float = 1.05
+    length_min: float = .85
+    length_max: float = 1.15
     length_ends: str = 'both'
     junction_tolerance: float = .002
     scale: bool = False
     scale_mode: str = 'local'
-    scale_min: float = .95
-    scale_max: float = 1.05
+    scale_min: float = .75
+    scale_max: float = 1.25
     scale_center: str = 'random'
     scale_radius: float = .35
     scale_step: float = .01

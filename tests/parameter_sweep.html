@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Glymorph 单字幅度预实验</title>
+<style>
+*{box-sizing:border-box}body{font:16px/1.6 system-ui,sans-serif;color:#203348;background:#f4f6f8;margin:0}
+main{max-width:1480px;margin:auto;padding:24px}h1{font-size:28px;margin:0 0 8px}h2{font-size:21px}
+p{max-width:1100px}.muted{color:#58697b}button,select{font:inherit;padding:5px 10px;border:1px solid #aab8c4;border-radius:5px;background:white;color:inherit}
+button{cursor:pointer}button.active{background:#e2efff;border-color:#086bca}a{color:#086bca}
+.controls{background:white;padding:20px;border:1px solid #d7dfe6;border-radius:10px}
+.knobs{display:flex;flex-wrap:wrap;gap:24px;margin:14px 0}.knobs label{display:block;min-width:280px}input[type=range]{width:240px;vertical-align:middle}
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0}
+#cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px;margin:20px 0}
+.card{background:white;border:1px solid #d7dfe6;border-radius:8px;padding:14px;overflow:auto}.card h3{margin:0;font-size:17px}
+.picture{min-height:220px;display:flex;align-items:center;justify-content:center}.picture svg{flex-shrink:0}
+.metrics{font-size:14px;color:#526579;margin:8px 0}details{font-size:14px}summary{cursor:pointer}pre{white-space:pre-wrap;overflow-wrap:anywhere}
+.reference{display:none}body.overlay .reference{display:block}body.original .ink{display:none}body.original .reference{display:block;stroke:#172d42;stroke-dasharray:none}
+#strip{background:white;padding:16px;overflow:auto;border-radius:8px}#strip svg{display:block}
+.matrices{overflow:auto}img{display:block;width:1605px;max-width:none}details.matrix{margin:16px 0}
+code{background:#e9eef3;padding:2px 4px;border-radius:3px}#command{background:#e9eef3;padding:12px}
+</style></head><body><main>
+<h1>单字幅度预实验</h1><p id="source" class="muted"></p>
+<p>先比较不同幅度是否看得出变化，再看同一参数下的一排字是否自然。
+长短与局部缩放可分别调节；<strong>±15% 表示从 0.85～1.15 随机抽取倍数</strong>，每笔的实际变化可能更小。</p>
+<div class="controls">
+<div class="bar" id="presets"><span>组合对照（长短 / 缩放）</span><button data-l="1" data-s="1">旧默认：5% / 5%</button>
+<button data-l="2" data-s="4">组合 A：10% / 20%</button><button data-l="3" data-s="5">组合 B（当前默认）：15% / 25%</button>
+<button data-l="5" data-s="5">组合 C：25% / 25%</button></div>
+<div class="knobs"><label>笔画长短 <strong id="length-label"></strong><br><input id="length" type="range" min="0" max="7" value="3" step="1"></label>
+<label>局部缩放 <strong id="scale-label"></strong><br><input id="scale" type="range" min="0" max="7" value="5" step="1"></label></div>
+<div class="bar"><label>显示 <select id="view"><option value="clean">纯字形（看自然程度）</option><option value="overlay">叠加原字（看变化）</option><option value="original">原字参照</option></select></label>
+<button id="blink" aria-pressed="false">交替查看</button>
+<label>原字最大边长 <select id="size"><option value="60">60 px</option><option value="120" selected>120 px</option><option value="200">200 px</option></select></label></div>
+<p class="muted">0 表示关闭该项；局部缩放使用随机中心，影响半径固定为字形最大边长的 35%。
+切换幅度时，每个样本复用相同随机序列。叠加时先调整长短，缩放中心随调整后的字框变化。</p>
+</div>
+<p id="summary"></p><div id="cards"></div>
+<h2>连续看六个变体</h2><p class="muted">左侧为原字，右侧按样本顺序排列。原字最大边长固定为 48 px，便于看较小尺寸下的重复感；不对应实机毫米尺寸。</p>
+<div id="strip"></div>
+<h2>使用这组参数</h2><pre id="command"></pre>
+<p class="muted">命令中的 <code>font.gfont</code> 请替换成自己的字体路径；输出目录须为新目录。本页选择不会修改项目默认值。</p>
+<h2>各档幅度总览</h2><p>每行对应同一个随机样本，每列依次增大幅度。所有矩阵共用坐标与比例。</p>
+<details class="matrix" open><summary>笔画长短：0、±5%、±10%、±15%、±20%、±25%、±30%、±40%</summary><p><a href="length.svg">打开 / 保存长短对照图</a></p><div class="matrices"><img src="length.svg" alt="长短参数逐档对照"></div></details>
+<details class="matrix"><summary>局部缩放：逐档对照</summary><p><a href="scale.svg">打开 / 保存缩放对照图</a></p><div class="matrices"><img src="scale.svg" alt="局部缩放参数逐档对照"></div></details>
+<details class="matrix"><summary>两项使用相同幅度叠加：逐档对照</summary><p><a href="combined.svg">打开 / 保存叠加对照图</a></p><div class="matrices"><img src="combined.svg" alt="叠加参数逐档对照"></div></details>
+<p class="muted">图形由当前算法生成，按 .gfont 字形记录编码后读回；此预实验只处理一个字，不导出完整字体。
+位移指标按每条 path 的 33 个等弧长位置对应采样，不能代替自然程度判断。单字结果用于筛选下一轮参数，不代表整个字库或实机效果。
+<a href="report.json">实验参数与坐标记录</a></p>
+</main><script>
+const data = /*EXPERIMENT_DATA*/;
+const el = id => document.getElementById(id);
+const lengthInput = el('length'), scaleInput = el('scale');
+const safe = text => String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pct = value => (100*value).toFixed(0)+'%';
+const range = amount => amount ? '±'+pct(amount)+'（'+(1-amount).toFixed(2)+'～'+(1+amount).toFixed(2)+'）' : '关闭';
+const padding = data.source_size*.08;
+const [x0,y0,x1,y1] = data.bounds;
+const box = [x0-padding,y0-padding,x1-x0+2*padding,y1-y0+2*padding];
+let timer = null;
+el('source').textContent = `字体：${data.source_font} · 字符：${data.char} · ${data.source_strokes.length} 条 path · 种子 ${data.seed} · ${data.count} 个配对样本`;
+lengthInput.max = scaleInput.max = data.levels.length-1;
+function paths(strokes, color, cls) {
+  return strokes.map(s => `<polyline class="${cls}" points="${s.map(p=>p.join(',')).join(' ')}" fill="none" stroke="${color}" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"${cls==='reference'?' stroke-dasharray="4 3"':''}/>`).join('');
+}
+function glyph(strokes, size, original=false) {
+  const width = box[2]*size/data.source_size, height = box[3]*size/data.source_size;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="${box.join(' ')}" role="img" aria-label="${safe(data.char)}${original?'原字':'变体'}">`+
+    (original ? paths(strokes,'#172d42','source') : paths(data.source_strokes,'#a5b0bf','reference')+paths(strokes,'#086bca','ink'))+'</svg>';
+}
+function stop() {
+  if(timer!==null) clearInterval(timer);
+  timer=null; document.body.className=el('view').value;
+  el('blink').textContent='交替查看'; el('blink').setAttribute('aria-pressed','false');
+}
+function render() {
+  stop();
+  const li=Number(lengthInput.value), si=Number(scaleInput.value), size=Number(el('size').value);
+  const l=data.levels[li], s=data.levels[si], current=data.cases[li*data.levels.length+si];
+  el('length-label').textContent=range(l); el('scale-label').textContent=range(s);
+  document.querySelectorAll('#presets button').forEach(button=>button.classList.toggle('active',Number(button.dataset.l)===li&&Number(button.dataset.s)===si));
+  el('summary').textContent=`这组 ${data.count} 个变体的采样最大位移中位数为 ${current.median_max_displacement_percent.toFixed(2)}%（相对于原字最大边长）。`;
+  const original=`<article class="card"><h3>原字</h3><div class="picture">${glyph(data.source_strokes,size,true)}</div><p class="metrics">各格始终共用坐标与显示比例</p></article>`;
+  el('cards').innerHTML=original+current.variants.map((v,i)=>{
+    const d=v.difference, ratios=d.path_length_ratios.filter(r=>r!==null);
+    const extent=ratios.length ? Math.min(...ratios).toFixed(3)+'～'+Math.max(...ratios).toFixed(3) : '原路径长度为零';
+    const lengths=d.path_length_ratios.map((r,j)=>`P${j+1}：${r===null?'原路径长度为零':'×'+r.toFixed(4)}`).join('\n');
+    return `<article class="card"><h3>样本 ${i+1}</h3><div class="picture">${glyph(v.strokes,size)}</div>`+
+      `<p class="metrics">采样最大位移 ${d.max_sampled_displacement_percent.toFixed(2)}%<br>path 长度比 ${extent}</p>`+
+      `<details><summary>查看逐 path 长度比</summary><pre>${lengths}</pre></details></article>`;
+  }).join('');
+  const tileWidth=box[2]*48/data.source_size+20, tileHeight=box[3]*48/data.source_size;
+  const strip=[data.source_strokes,...current.variants.map(v=>v.strokes)].map((strokes,i)=>`<g transform="translate(${i*tileWidth},0)">${glyph(strokes,48,i===0)}</g>`).join('');
+  el('strip').innerHTML=`<svg xmlns="http://www.w3.org/2000/svg" width="${tileWidth*(data.count+1)}" height="${tileHeight}">${strip}</svg>`;
+  const flags=[];
+  if(l) flags.push(`--length --length-min ${(1-l).toFixed(2)} --length-max ${(1+l).toFixed(2)}`);
+  if(s) flags.push(`--scale --scale-mode local --scale-min ${(1-s).toFixed(2)} --scale-max ${(1+s).toFixed(2)} --scale-center random --scale-radius 0.35 --scale-step 0.01`);
+  el('command').textContent=flags.length ? `python -m glymorph generate "font.gfont" --output "output/selected-parameters" --count ${data.count} --seed ${data.seed} --preview-chars "${data.char}" --preview-count ${data.count} `+flags.join(' ') : '两项均关闭，显示原字；生成时需至少开启一项。';
+}
+lengthInput.addEventListener('input',render); scaleInput.addEventListener('input',render); el('size').addEventListener('change',render); el('view').addEventListener('change',stop);
+document.querySelectorAll('#presets button').forEach(button=>button.addEventListener('click',()=>{lengthInput.value=button.dataset.l;scaleInput.value=button.dataset.s;render();}));
+el('blink').addEventListener('click',()=>{
+  if(timer!==null){stop();return;}
+  document.body.className='original';el('blink').textContent='停止交替';el('blink').setAttribute('aria-pressed','true');
+  timer=setInterval(()=>{document.body.className=document.body.className==='original'?'clean':'original';},700);
+});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
+render();
+</script></body></html>

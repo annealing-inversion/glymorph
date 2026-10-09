@@ -12,7 +12,7 @@ from typing import Callable
 
 from . import __version__
 from .font import Font
-from .preview import comparison_svg
+from .preview import comparison_html, comparison_svg, glyph_difference
 from .transforms import Options, plan_length, transform_glyph
 
 
@@ -121,11 +121,18 @@ def generate_variants(
             'preview_chars': preview_chars, 'preview_count': min(preview_count, count),
             'operation_order': [key for key in ('length', 'scale') if getattr(options, key)],
             'validation': 'All glyphs and inline previews reread; CRC, finite float32 coordinates, charset and path counts checked.',
+            'changed_glyphs_definition': 'Different serialized glyph records, including added sampling points; not a measure of visible shape difference.',
+            'preview_differences': [
+                {ch: glyph_difference(source.glyphs[ch], variant[ch]) for ch in preview_chars}
+                for variant in previews
+            ],
             'kenjoy_import_tested': False, 'hardware_tested': False,
             'files': records,
         }
         (stage / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
-        (stage / 'preview.svg').write_text(comparison_svg(source.glyphs, previews, preview_chars), encoding='utf-8')
+        svg = comparison_svg(source.glyphs, previews, preview_chars)
+        (stage / 'preview.svg').write_text(svg, encoding='utf-8')
+        (stage / 'preview.html').write_text(comparison_html(svg, asdict(options)), encoding='utf-8')
         if destination.exists():
             raise ValueError('生成期间输出目录已被创建，未覆盖该目录')
         stage.rename(destination)

@@ -14,6 +14,7 @@ from glymorph import generate_variants
 from glymorph.cli import main
 from glymorph.font import Cursor, Font, FontError, Glyph, encode_string
 from glymorph.geometry import contact_interval, length
+from glymorph.preview import glyph_difference
 from glymorph.transforms import Options, plan_length, scale_glyph, transform_glyph
 
 
@@ -219,6 +220,13 @@ class CLITests(unittest.TestCase):
             self.assertEqual(manifest['operation_order'], ['scale'])
             self.assertFalse(manifest['options']['length'])
             self.assertTrue((root/'a'/'preview.svg').is_file())
+            self.assertTrue((root/'a'/'preview.html').is_file())
+            original = Font.load(source)
+            for index, differences in enumerate(manifest['preview_differences'], 1):
+                loaded = Font.load(root/'a'/f'variant_{index:03}.gfont')
+                self.assertEqual(differences, {
+                    ch: glyph_difference(original.glyphs[ch], loaded.glyphs[ch])
+                    for ch in manifest['preview_chars']})
             before = (root/'a'/'variant_001.gfont').read_bytes()
             self.assertEqual(self.run_cli(common + ['--output', root/'a']), 2)
             self.assertEqual((root/'a'/'variant_001.gfont').read_bytes(), before)
